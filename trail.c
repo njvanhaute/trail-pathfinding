@@ -201,7 +201,7 @@ void FindPath(pgmPic *myPic, char startSide) {
             myPic->pixels[pos][i - 1] = 0;
         }
     }
-    if (startSide == 'S') {
+    else if (startSide == 'S') {
         pos = myPic->cols / 2;
         myPic->pixels[myPic->rows - 1][pos] = 0;
         for (i = myPic->rows - 1; i > 0; i--) {
@@ -226,7 +226,7 @@ void FindPath(pgmPic *myPic, char startSide) {
             myPic->pixels[i - 1][pos] = 0;
         }
     }
-    if (startSide == 'N') {
+    else if (startSide == 'N') {
         pos = myPic->cols / 2;
         myPic->pixels[0][pos] = 0;
         for (i = 0; i < myPic->rows - 1; i++) {
