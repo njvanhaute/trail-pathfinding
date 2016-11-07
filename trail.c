@@ -13,7 +13,6 @@ void GetDimensions(pgmPic *myPic, FILE *inputFile);
 void GetPixels(pgmPic *myPic, FILE *inputFile);
 void ApplyMultiplier(pgmPic *myPic, int min, double multiplier);
 void GeneratePGM(pgmPic *myPic, char *fileName);
-void GenerateTrail(pgmPic *myPic, char *fileName);
 void FindPath(pgmPic *myPic, char startSide);
 bool ValidSides(char *direction);
 int FindMax(pgmPic *myPic);
@@ -32,8 +31,10 @@ int main(int argc, char **argv) {
         printf("Error: '%s' is not a valid direction.\n", argv[2]);
         return -1;
     }
+    char *fileName = malloc(strlen(argv[1]) + 5);
+    strcpy(fileName, argv[1]);
     char startSide = argv[2][0];  
-    FILE *inputFile = fopen(argv[1], "r");
+    FILE *inputFile = fopen(fileName, "r");
     if (!inputFile) {
         printf("Error: Couldn't open file: '%s'\n", argv[1]);
         return -1;
@@ -51,9 +52,10 @@ int main(int argc, char **argv) {
     int min = FindMin(myPic);
     double multiplier = (200) / (max - min);
     ApplyMultiplier(myPic, min, multiplier);
-    GeneratePGM(myPic, argv[1]);
+    GeneratePGM(myPic, fileName);
     FindPath(myPic, startSide);
-    GenerateTrail(myPic, argv[1]);
+    strcat(fileName, "-trail");
+    GeneratePGM(myPic, fileName);
     return 0;
 }
 
@@ -125,28 +127,6 @@ void GeneratePGM(pgmPic *myPic, char *fileName) {
     }
     fclose(outputFile);
 } 
-
-void GenerateTrail(pgmPic *myPic, char *fileName) {
-    char *newFile = malloc(strlen(fileName) + 5);
-    strcpy(newFile, fileName);
-    strcat(newFile, "-trail.pgm");
-    FILE *outputFile = fopen(newFile, "w");
-    if (!outputFile) {
-        printf("Error: Could not create file.\n");
-        return;
-    }
-    fprintf(outputFile, "P2\n");
-    fprintf(outputFile, "%d %d\n", myPic->cols, myPic->rows);
-    fprintf(outputFile, "255\n");
-    int i, j;
-    for (i = 0; i < myPic->rows; i++) {
-        for (j = 0; j < myPic->cols; j++) {
-	    fprintf(outputFile, "%d ", myPic->pixels[i][j]);
-	}
-	fprintf(outputFile, "\n");
-    }
-    fclose(outputFile); 
-}
 
 void FindPath(pgmPic *myPic, char startSide) {
     int i, pos;
