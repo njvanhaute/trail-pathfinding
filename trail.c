@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
     pgmPic *myPic = malloc(sizeof(pgmPic));
     GetDimensions(myPic, inputFile);
     myPic->pixels = malloc(sizeof(int *) * myPic->rows);
-    int i = 0;
+    int i;
     for (i = 0; i < myPic->rows; i++) {
         myPic->pixels[i] = malloc(sizeof(int) * myPic->cols);
     }
