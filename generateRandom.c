@@ -6,8 +6,7 @@ const int LIMIT = 7;
 
 int main(void) {
     srand(time(NULL));
-    int i = 0;
-    int j = 0;
+    int i, j;
     FILE *outputFile = fopen("random", "w");
     int rows = rand() % LIMIT + LIMIT;
     int cols = rand() % LIMIT + LIMIT;
