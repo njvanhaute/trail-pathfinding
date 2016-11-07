@@ -1,22 +1,22 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 
-typedef struct pgm_struct {
+typedef struct pgmPic_struct {
     int rows;
     int cols;
     int **pixels;
 } pgmPic;
 
+bool ValidSides(char *direction);
+int FindMin(pgmPic *myPic);
+int FindMax(pgmPic *myPic);
 void GetDimensions(pgmPic *myPic, FILE *inputFile);
 void GetPixels(pgmPic *myPic, FILE *inputFile);
 void ApplyMultiplier(pgmPic *myPic, int min, double multiplier);
 void GeneratePGM(pgmPic *myPic, char *fileName);
 void FindPath(pgmPic *myPic, char startSide);
-bool ValidSides(char *direction);
-int FindMax(pgmPic *myPic);
-int FindMin(pgmPic *myPic);
 
 int main(int argc, char **argv) {
     if (argc != 3) {
@@ -59,6 +59,44 @@ int main(int argc, char **argv) {
     return 0;
 }
 
+bool ValidSides(char *direction) {
+    if (strcmp("W-E", direction) == 0) {
+        return true;
+    }
+    if (strcmp("E-W", direction) == 0) {
+        return true;
+    }
+    if (strcmp("N-S", direction) == 0) {
+        return true;
+    }
+    if (strcmp("S-N", direction) == 0) {
+        return true;
+    }
+    return false;
+}  
+
+int FindMin(pgmPic *myPic) {
+    int i, j;
+    int min = myPic->pixels[0][0];
+    for (i = 0; i < myPic->rows; i++) {
+        for (j = 0; j < myPic->cols; j++) {
+            min = (myPic->pixels[i][j] < min) ? myPic->pixels[i][j] : min;
+        }
+    }
+    return min;
+} 
+
+int FindMax(pgmPic *myPic) {
+    int i, j;
+    int max = myPic->pixels[0][0];
+    for (i = 0; i < myPic->rows; i++) {
+        for (j = 0; j < myPic->cols; j++) {
+            max = (myPic->pixels[i][j] > max) ? myPic->pixels[i][j] : max;
+        }
+    }
+    return max;
+}
+
 void GetDimensions(pgmPic *myPic, FILE *inputFile) {
     int rows, cols;
     fscanf(inputFile, "%d %d", &rows, &cols);
@@ -74,28 +112,6 @@ void GetPixels(pgmPic *myPic, FILE *inputFile) {
         } 
     }
 }
- 
-int FindMax(pgmPic *myPic) {
-    int i, j;
-    int max = myPic->pixels[0][0];
-    for (i = 0; i < myPic->rows; i++) {
-        for (j = 0; j < myPic->cols; j++) {
-            max = (myPic->pixels[i][j] > max) ? myPic->pixels[i][j] : max;
-        }
-    }
-    return max;
-}
-
-int FindMin(pgmPic *myPic) {
-    int i, j;
-    int min = myPic->pixels[0][0];
-    for (i = 0; i < myPic->rows; i++) {
-        for (j = 0; j < myPic->cols; j++) {
-            min = (myPic->pixels[i][j] < min) ? myPic->pixels[i][j] : min;
-        }
-    }
-    return min;
-} 
 
 void ApplyMultiplier(pgmPic *myPic, int min, double multiplier) {
     int i, j;
@@ -230,20 +246,4 @@ void FindPath(pgmPic *myPic, char startSide) {
             myPic->pixels[i + 1][pos] = 0;
         }
     }
-}
-
-bool ValidSides(char *direction) {
-    if (strcmp("W-E", direction) == 0) {
-        return true;
-    }
-    if (strcmp("E-W", direction) == 0) {
-        return true;
-    }
-    if (strcmp("N-S", direction) == 0) {
-        return true;
-    }
-    if (strcmp("S-N", direction) == 0) {
-        return true;
-    }
-    return false;
-}          
+}        
