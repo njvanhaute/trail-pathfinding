@@ -28,12 +28,11 @@ int main(int argc, char **argv) {
         printf("Usage: ./trail [datafile] [direction]\n");
         return -1;
     }
-    char startSide; 
     if (!ValidSides(argv[2])) {
         printf("Error: '%s' is not a valid direction.\n", argv[2]);
         return -1;
     }
-    startSide = argv[2][0];  
+    char startSide = argv[2][0];  
     FILE *inputFile = fopen(argv[1], "r");
     if (!inputFile) {
         printf("Error: Couldn't open file: '%s'\n", argv[1]);
