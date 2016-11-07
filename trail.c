@@ -56,6 +56,11 @@ int main(int argc, char **argv) {
     FindPath(myPic, startSide);
     strcat(fileName, "-trail");
     GeneratePGM(myPic, fileName);
+    free(fileName);
+    for (i = 0; i < myPic->rows; i++) {
+        free(myPic->pixels[i]);
+    }
+    free(myPic->pixels);
     return 0;
 }
 
@@ -142,6 +147,7 @@ void GeneratePGM(pgmPic *myPic, char *fileName) {
         fprintf(outputFile, "\n");
     }
     fclose(outputFile);
+    free(newFile);
 } 
 
 void FindPath(pgmPic *myPic, char startSide) {
