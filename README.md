@@ -4,4 +4,4 @@ It then generates another .pgm representing a trail through the lowest elevation
 This is accomplished through the use of a greedy algorithm.
 
 
-For debugging, I've also included generateRandom.c, which generates a random data file which can be used to test the algorithm.
+For debugging purposes, I've also included generateRandom.c, which generates a random data file which can be used to test the algorithm.
