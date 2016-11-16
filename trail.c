@@ -263,7 +263,7 @@ void FindPath(pgmPic *myPic, char startSide) {
                 pos = a > b ? (a > c ? pos : pos - 1) : (b > c ? pos + 1 : pos - 1);
                 if (origPos == pos - 1 && b == a) pos = origPos;
                 if (origPos == pos + 1 && c == a) pos = origPos;
-                if (origPos == pos + 1 && c == b) pos = origPos + 1;
+                if (origPos == pos + 1 && c == b) pos = origPos - 1;
             }
             myPic->pixels[i + 1][pos] = 0;
         }
