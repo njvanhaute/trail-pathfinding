@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
     fclose(inputFile);
     int max = FindMax(myPic);
     int min = FindMin(myPic);
-    double multiplier = (200) / (max - min);
+    double multiplier = (200.0) / (max - min);
     ApplyMultiplier(myPic, min, multiplier);
     GeneratePGM(myPic, fileName);
     FindPath(myPic, startSide);
@@ -160,19 +160,23 @@ void FindPath(pgmPic *myPic, char startSide) {
             if (pos == myPic->rows - 1) {
                 int a = myPic->pixels[pos][i + 1];
                 int b = myPic->pixels[pos - 1][i + 1];
-                pos = (a > b) ? pos : pos - 1;
+                pos = (a < b) ? pos - 1 : pos;
             }
             // Upper edge of matrix:
             else if (pos == 0) {
                 int a = myPic->pixels[pos][i + 1];
                 int b = myPic->pixels[pos + 1][i + 1];
-                pos = (a > b) ? pos : pos + 1;
+                pos = (a < b) ? pos + 1 : pos;
             }
             else {
+                int origPos = pos;  
                 int a = myPic->pixels[pos][i + 1];
                 int b = myPic->pixels[pos + 1][i + 1];
                 int c = myPic->pixels[pos - 1][i + 1];
                 pos = a > b ? (a > c ? pos : pos - 1) : (b > c ? pos + 1 : pos - 1);
+                if (origPos == pos - 1 && b == a) pos = origPos;
+                if (origPos == pos + 1 && c == a) pos = origPos;
+                if (origPos == pos + 1 && c == b) pos = origPos + 1;
             }
             myPic->pixels[pos][i + 1] = 0;
         }
@@ -185,19 +189,23 @@ void FindPath(pgmPic *myPic, char startSide) {
             if (pos == myPic->rows - 1) {
                 int a = myPic->pixels[pos][i - 1];
                 int b = myPic->pixels[pos - 1][i - 1];
-                pos = (a > b) ? pos : pos - 1;
+                pos = (a < b) ? pos - 1 : pos;
             }
             // Upper edge of matrix:
             else if (pos == 0) {
                 int a = myPic->pixels[pos][i - 1];
                 int b = myPic->pixels[pos + 1][i - 1];
-                pos = (a > b) ? pos : pos + 1;
+                pos = (a < b) ? pos + 1 : pos;
             }
             else {
+                int origPos = pos;
                 int a = myPic->pixels[pos][i - 1];
                 int b = myPic->pixels[pos + 1][i - 1];
                 int c = myPic->pixels[pos - 1][i - 1];
                 pos = a > b ? (a > c ? pos : pos - 1) : (b > c ? pos + 1 : pos - 1);
+                if (origPos == pos - 1 && b == a) pos = origPos;
+                if (origPos == pos + 1 && c == a) pos = origPos;
+                if (origPos == pos + 1 && c == b) pos = origPos + 1;
             }
             myPic->pixels[pos][i - 1] = 0;
         }
@@ -210,19 +218,23 @@ void FindPath(pgmPic *myPic, char startSide) {
             if (pos == myPic->cols - 1) {
                 int a = myPic->pixels[i - 1][pos];
                 int b = myPic->pixels[i - 1][pos - 1];
-                pos = (a > b) ? pos : pos - 1;
+                pos = (a < b) ? pos - 1 : pos;
             }
             // Left edge of matrix:
             else if (pos == 0) {
                 int a = myPic->pixels[i - 1][pos];
                 int b = myPic->pixels[i - 1][pos + 1];
-                pos = (a > b) ? pos : pos + 1;
+                pos = (a < b) ? pos + 1 : pos;
             }
             else {
+                int origPos = pos;
                 int a = myPic->pixels[i - 1][pos];
                 int b = myPic->pixels[i - 1][pos + 1];
                 int c = myPic->pixels[i - 1][pos - 1];
                 pos = a > b ? (a > c ? pos : pos - 1) : (b > c ? pos + 1 : pos - 1);
+                if (origPos == pos - 1 && b == a) pos = origPos;
+                if (origPos == pos + 1 && c == a) pos = origPos;
+                if (origPos == pos + 1 && c == b) pos = origPos + 1;
             }
             myPic->pixels[i - 1][pos] = 0;
         }
@@ -235,19 +247,23 @@ void FindPath(pgmPic *myPic, char startSide) {
             if (pos == myPic->cols - 1) {
                 int a = myPic->pixels[i + 1][pos];
                 int b = myPic->pixels[i + 1][pos - 1];
-                pos = (a > b) ? pos : pos - 1;
+                pos = (a < b) ? pos - 1 : pos;
             }
             // Left edge of matrix:
             else if (pos == 0) {
                 int a = myPic->pixels[i + 1][pos];
                 int b = myPic->pixels[i + 1][pos + 1];
-                pos = (a > b) ? pos : pos + 1;
+                pos = (a < b) ? pos + 1 : pos;
             }
             else {
+                int origPos = pos;
                 int a = myPic->pixels[i + 1][pos];
                 int b = myPic->pixels[i + 1][pos + 1];
                 int c = myPic->pixels[i + 1][pos - 1];
                 pos = a > b ? (a > c ? pos : pos - 1) : (b > c ? pos + 1 : pos - 1);
+                if (origPos == pos - 1 && b == a) pos = origPos;
+                if (origPos == pos + 1 && c == a) pos = origPos;
+                if (origPos == pos + 1 && c == b) pos = origPos + 1;
             }
             myPic->pixels[i + 1][pos] = 0;
         }

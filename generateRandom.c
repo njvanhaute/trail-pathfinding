@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-const int LIMIT = 7;
+const int LIMIT = 5;
 
 int main(void) {
     srand(time(NULL));
